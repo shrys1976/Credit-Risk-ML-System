@@ -1,0 +1,72 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints
+
+# =========================
+# Virtual Environment
+# =========================
+.env
+.venv
+
+# =========================
+# Data Files (IMPORTANT)
+# =========================
+data/raw/*
+data/processed/*
+
+# Keep folder structure but not data
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# =========================
+# Model Files
+# =========================
+*.pkl
+*.joblib
+*.h5
+*.onnx
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Experiment Tracking (future safe)
+# =========================
+mlruns/
+wandb/
+
+# =========================
+# Temporary
+# =========================
+*.tmp
+*.temp
