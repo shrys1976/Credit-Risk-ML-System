@@ -1,123 +1,126 @@
 
 
-# Credit Risk Prediction —  ML System
 
-## Overview
 
-This project implements an end-to-end machine learning system for predicting loan default risk using the Home Credit Default Risk dataset.
+# Credit Risk Prediction — ML System
 
-The goal is to build an  ML pipeline that:
+##  Project Overview
 
-* Handles real-world messy tabular financial data
-* Uses modular feature engineering and preprocessing pipelines
-* Benchmarks multiple model families
-* Selects a final production candidate based on validation performance
-* Provides interpretability through feature importance analysis
+This project implements an end-to-end machine learning system for predicting loan default risk using real-world financial application data.
 
-This project focuses on **engineering discipline + reproducibility**, not just model accuracy.
+The system is designed with **production ML engineering principles**, including:
+
+* Modular feature engineering pipelines
+* Reusable preprocessing and model training modules
+* Multi-model benchmarking
+* Cross-validation based performance validation
+* Business-aware decision optimization using profit simulation
+* Model interpretability via feature importance analysis
+* Inference-ready model serialization
+
+This project emphasizes **real-world ML workflow**, not just model accuracy.
 
 ---
 
-## Business Problem
+##  Business Problem
 
 Financial institutions must estimate the probability that a customer will default on a loan.
 
 Accurate credit risk prediction enables:
 
-* Better loan approval decisions
-* Risk-adjusted interest rate pricing
-* Reduced default losses
-* Improved portfolio stability
+* Risk-adjusted loan approvals
+* Portfolio loss reduction
+* Interest rate optimization
+* Regulatory-compliant risk modeling
 
-This system predicts:
+###  Objective
 
-**Input:** Customer application data
-**Output:** Probability of default (PD)
+Predict probability of default (PD) for each applicant and optimize approval threshold for maximum portfolio profit.
 
 ---
 
-## Dataset
+##  Dataset
 
-Source: Home Credit Default Risk Dataset
-
-Main Table Used:
-
-* `application_train.csv`
+Dataset: Home Credit Default Risk
+Primary Table Used: `application_train.csv`
 
 Future extensions could include:
 
-* Bureau history
-* Previous loans
-* Installment payment history
+* Credit bureau history
+* Previous loan performance
+* Installment payment behavior
 
 ---
 
-## Project Architecture
+##  System Architecture
 
 ```
 Raw Data
 ↓
-Feature Engineering Module (src/features)
+Feature Engineering (src/features)
 ↓
 Preprocessing Pipeline (ColumnTransformer)
 ↓
 Model Training Modules (src/models)
 ↓
-Model Evaluation + Cross Validation
+Cross Validation Evaluation
 ↓
-Final Model Selection
+Model Comparison & Selection
 ↓
-Model Serialization (Inference Ready)
+Business Decision Optimization (Profit Simulation)
+↓
+Model Serialization (Deployment Ready)
 ```
 
 ---
 
-## Repository Structure
+##  Repository Structure
 
 ```
 src/
-  features/
-    build_features.py
-    pipeline.py
-
-  models/
-    train_model.py
-    train_tree_model.py
-    train_histgb_model.py
-    train_xgb_model.py
-    evaluate_model.py
-    save_model.py
-
+ ├ features/
+ │   ├ build_features.py
+ │   ├ pipeline.py
+ │
+ ├ models/
+ │   ├ train_model.py
+ │   ├ train_tree_model.py
+ │   ├ train_histgb_model.py
+ │   ├ train_xgb_model.py
+ │   ├ evaluate_model.py
+ │   ├ save_model.py
+ │
+ ├ decision/
+ │   ├ profit_simulation.py
+ │
 notebooks/
-  01_eda.ipynb
-  03_modeling.ipynb
+ ├ 01_eda.ipynb
+ ├ 03_modeling.ipynb
 
 artifacts/
-  saved_model.joblib
+ ├ xgb_credit_model.joblib
 ```
 
 ---
 
-## Feature Engineering
+##  Feature Engineering Strategy
 
-Key engineered features include:
+### Financial Stress Features
 
-### Financial Stress Indicators
+* Credit-to-Income Ratio
+* Annuity-to-Income Ratio
 
-* Credit to Income Ratio
-* Annuity to Income Ratio
+### Customer Stability Signals
 
-### Stability Indicators
-
-* Employment anomaly flags
-* Registration duration signals
+* Employment anomaly detection
+* Registration duration
 * Phone activity recency
 
-### Demographic Signals
+### Demographic Features
 
-* Age (converted from DAYS_BIRTH)
+* Age conversion from raw birth date encoding
 
-### Data Cleaning
+### Data Quality Handling
 
 * Sentinel missing value handling
 * Identifier column removal
@@ -125,7 +128,7 @@ Key engineered features include:
 
 ---
 
-## Preprocessing Pipeline
+##  Preprocessing Pipeline
 
 Implemented using sklearn `ColumnTransformer`.
 
@@ -137,78 +140,33 @@ Implemented using sklearn `ColumnTransformer`.
 ### Categorical Pipeline
 
 * Most Frequent Imputation
-* One-Hot Encoding (unknown category safe)
+* One-Hot Encoding with unknown category safety
 
 ---
 
-## Models Evaluated
+##  Models Evaluated
 
-### 1️. Logistic Regression
-
-Baseline linear model.
-
-Purpose:
-
-* Establish linear separability baseline
-* Provide interpretable reference performance
-
----
-
-### 2️. Random Forest
-
-Tree ensemble baseline.
-
-Purpose:
-
-* Capture nonlinear interactions
-* Provide feature importance baseline
+| Model                | Purpose                      |
+| -------------------- | ---------------------------- |
+| Logistic Regression  | Linear baseline              |
+| Random Forest        | Nonlinear bagging baseline   |
+| Gradient Boosting    | Sequential boosting baseline |
+| HistGradientBoosting | Modern histogram boosting    |
+| XGBoost              | Final production candidate   |
 
 ---
 
-### 3️. Gradient Boosting (Sklearn)
-
-Sequential boosting baseline.
-
-Purpose:
-
-* Test boosting improvement over bagging
-
----
-
-### 4️. HistGradientBoosting
-
-Modern histogram boosting (sklearn optimized).
-
-Purpose:
-
-* Faster boosting for large tabular datasets
-* Improved generalization vs classic GB
-
----
-
-### 5️. XGBoost (Final Selected Model)
-
-Industry-standard gradient boosting.
-
-Purpose:
-
-* Final performance optimization
-* Strong tabular interaction learning
-* Robust regularization controls
-
----
-
-## Model Performance
+##  Model Performance
 
 ### Validation ROC AUC
 
-| Model                | ROC AUC |
-| -------------------- | ------- |
-| Logistic Regression  | ~0.749  |
-| Random Forest        | ~0.726  |
-| Gradient Boosting    | ~0.753  |
-| HistGradientBoosting | ~0.759  |
-| XGBoost              | ~0.762  |
+| Model                | ROC AUC    |
+| -------------------- | ---------- |
+| Logistic Regression  | ~0.749     |
+| Random Forest        | ~0.726     |
+| Gradient Boosting    | ~0.753     |
+| HistGradientBoosting | ~0.759     |
+| XGBoost              | **~0.762** |
 
 ---
 
@@ -218,46 +176,75 @@ Purpose:
 
 ---
 
-###  Cross Validation Stability
+##  Cross Validation Stability
 
-Mean CV ROC AUC (Logistic Baseline): ~0.746
-Std Dev: ~0.0026
+Logistic Baseline Cross Validation:
 
-Indicates stable generalization across folds.
+* Mean ROC AUC: ~0.746
+* Std Dev: ~0.0026
+
+Indicates stable model generalization.
 
 ---
 
-## Final Model Selection
+##  Final Model Selection
 
-Final Production Model: **XGBoost**
+###  Selected Model: XGBoost
 
 Selected because:
 
 * Highest validation ROC AUC
-* Consistent improvement across model ladder
-* Strong handling of tabular feature interactions
-* Industry standard for tabular ML
+* Strong tabular feature interaction modeling
+* Industry standard for structured financial ML
+* Stable training behavior
 
 ---
 
-## Model Interpretability
+##  Model Interpretability
 
-Feature importance analysis shows dominant signals from:
+Feature importance analysis confirms dominant signals from:
 
-* External credit risk score features (EXT_SOURCE)
-* Payment burden ratios
+* External credit risk score features (EXT_SOURCE variables)
+* Financial stress ratio features
 * Customer stability indicators
-* Age / lifecycle effects
+* Age / lifecycle features
 
 ---
 
-###  Feature Importance Plot
+###  Feature Importance Visualization
 
 ![Top Feature Importance](assets/top_feat_imp.png)
 
 ---
 
-## Model Deployment Readiness
+##  Business Decision Optimization (Profit Simulation)
+
+Instead of using default probability threshold (0.5), a profit simulation layer was implemented to optimize loan approval decisions.
+
+### Simulation Includes:
+
+* Interest revenue modeling
+* Loss given default modeling
+* Operational cost modeling
+
+---
+
+### Key Finding
+
+Optimal Approval Threshold ≈ **0.20**
+
+This reflects real-world credit risk asymmetry:
+Default losses are much larger than interest gains.
+
+---
+
+###  Profit vs Threshold Visualization
+
+![Profit vs Decision Threshold](assets/profitdec_threshold.png)
+
+---
+
+##  Deployment Readiness
 
 Final model is saved as serialized pipeline artifact:
 
@@ -265,16 +252,14 @@ Final model is saved as serialized pipeline artifact:
 artifacts/xgb_credit_model.joblib
 ```
 
-Includes:
+This includes:
+Feature Engineering
 Preprocessing
-Feature engineering
-Model inference
-
-Allows direct prediction on raw input data.
+Model Inference
 
 ---
 
-## How to Run
+## ▶ How To Run
 
 ### Install Dependencies
 
@@ -286,7 +271,7 @@ pip install -r requirements.txt
 
 ### Train Models
 
-Run modeling notebook:
+Run:
 
 ```
 notebooks/03_modeling.ipynb
@@ -294,7 +279,7 @@ notebooks/03_modeling.ipynb
 
 ---
 
-### Load Saved Model
+### Load Model For Inference
 
 ```python
 import joblib
@@ -305,33 +290,32 @@ preds = model.predict_proba(X_new)
 
 ---
 
-## Key Technical Learnings
+##  Key Technical Learnings
 
 * Feature engineering dominates tabular ML performance
 * Boosting models outperform bagging on structured financial data
-* Histogram boosting significantly improves training efficiency
-* Cross validation is essential for stable performance estimation
-* Modular pipeline design is critical for production ML systems
+* Histogram boosting improves training efficiency significantly
+* Cross-validation is critical for stable evaluation
+* Business-aligned metrics outperform pure accuracy metrics
 
 ---
 
-## Future Improvements
+##  Future Improvements
 
-Potential next steps:
+Potential next enhancements:
 
-* Multi-table feature aggregation (bureau, previous loans)
-* Probability calibration for risk pricing
-* Decision threshold optimization for profit maximization
-* Model monitoring and drift detection simulation
-
----
-
-## Author
-
-Built as an end-to-end production-style ML system focusing on:
-Reproducibility
-Modularity
-Real-world tabular ML workflow
+* Multi-table feature aggregation
+* Probability calibration for financial risk pricing
+* Model monitoring and drift detection
+* Real-time inference pipeline
 
 ---
+
+##  Author
+
+Built as a production-style machine learning system demonstrating:
+
+* End-to-end ML pipeline engineering
+* Financial tabular modeling best practices
+* Business-aligned ML decision making
 
