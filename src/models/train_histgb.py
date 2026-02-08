@@ -7,11 +7,11 @@ def train_hist_gradient_boosting(preprocessor, X_train, y_train):
     model_pipeline = Pipeline(steps=[
         ("preprocessor", preprocessor),
         ("model", HistGradientBoostingClassifier(
-            max_iter=300,
-            learning_rate=0.05,
-            max_depth=6,
-            min_samples_leaf=20,
-            l2_regularization=1.0,
+            max_iter=500,
+            learning_rate=0.03,
+            max_depth=7,
+            min_samples_leaf=30,
+            l2_regularization=2.0,
             random_state=42
         ))
     ])
