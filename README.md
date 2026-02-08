@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Credit Risk ML System
 =======
 
@@ -322,4 +322,4 @@ Built as a production-style machine learning system demonstrating:
 * Financial tabular modeling best practices
 * Business-aligned ML decision making
 
->>>>>>> dev
+
